@@ -1,0 +1,45 @@
+﻿网盘：
+链接：https://pan.baidu.com/s/1VYfIKmvHiLl0cT4vlZ1ULQ 密码：3jyk 微信点餐系统 
+https://pan.baidu.com/s/1T5v-by_yNPV9TrLF3ik9KQ  mmall第一部
+https://pan.baidu.com/s/1i61Dp3Z    密码：lrqx      restket
+
+https://pan.baidu.com/s/1i6SKbGD  redis 教学
+
+https://pan.baidu.com/s/1i7pKHO5 高科技升级版本
+
+
+https://github.com/MicrosoftArchive/redis/releases  redis下载
+
+https://docs.open.alipay.com   支付宝沙箱文档
+
+
+https://pan.baidu.com/s/1kVhFfXw9Kbqne3iEwOOXPg 密码 ik82  Git
+
+今天任务：
+
+
+
+
+
+
+
+http://maven.aliyun.com/nexus/content/groups/public
+
+
+运行maven中的jar包：
+①： 复制 target的路径
+②：进入dos, cd target路径， 确认之后
+③：进入根目录，如果是在E盘，直接输入 E:
+④：复制架包的名字 java -jar 架包的名字
+
+
+
+
+
+
+
+
+
+
+
+

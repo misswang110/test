@@ -1,0 +1,291 @@
+https://github.com/MicrosoftArchive/redis/releases  redis下载
+
+quit退出
+redis-server.exe
+redis-cli
+shutdown
+redis-cli -p 3680
+redis-cli -p3680 -h 127.0.0.1
+redis-cli -a 123456
+redis-cli -p 6379 -h 127.0.0.1 -a 123456 shutdown 退出
+info
+select 0
+save
+flushdb
+flushall
+dbsize
+del a
+exists a
+expire a 10
+clear清除
+type a
+randomkey 
+rename 
+
+
+例如:
+	在C盘下建立一个Redis夹子,里面放的是redis的解压文件
+
+下载之后然后解压，然后打开dos 输入dos命令：
+	cd/--回车 到c盘根目录
+	cd Redis ---回车  redis-server.exe --回车 启动redis
+
+重新打开一个DOS作为客户端，
+	cd/--回车 到c盘根目录
+	cd Redis ---回车--redis-cli--回车
+	set a b--回车
+	keys *--回车
+	get a 就是通过a这个键去哪对应的值
+
+
+直接在服务端 Ctrl+C 关闭服务器，不会持久化 必须在客户端先要Ctrl+C 然后 redis-cli shutdown  正常关闭
+
+换端口例如端口是3680测试：
+	在客户端连接 redis-cli -p 3680
+	在客户端关闭 redis-cli -p3680 shutdown
+	使用-h连接，本地就是127.0.0.1 redis-cli -p3680 -h127.0.0.1
+
+修改端口号：
+	redis.windows.conf 在这里找到 port 默认是6379，可以修改端口号
+	修改端口号启动：redis-server.exe redis.windows.conf 启动后的端口号就是自己改的端口号
+
+修改密码：#表示注释，把前面的#去除，然后改自己的密码，一般在386行 # requirepass foobared ，把前面的#去点 把foobared换成密码：123456
+
+修改密码后：服务端启动redis-server.exe redis.windows.conf
+	客户端启动 redis-cli 这个时候ping 也不行了，keys * 也不行了
+	quit 退出 redis-cli -a 123456 带着密码去登录就可以了
+	redis-cli -p 6379 -h 127.0.0.1 -a 123456 shutdown 退出
+
+info:客户端连接之后 输入 info 查看系统信息
+
+
+在输入info后,最下面有个keyspace,
+
+# keyspace：默认用的是第0个空间
+select 的范围是0--15之间，包括0和15。
+select 0 命令表示在kyespace下创建一个名字是0的空间
+select 5 命令表示在kyespace下创建一个名字是5的空间
+一般select之后要set a a一下 这样在info 才能看到
+
+ flushdb ：删除当前的db第一个
+
+ flushdball:删除所有的keyspace
+
+dbsize ：当前的数量。当前select 0 的数量，如果是在select 1 下面就是select 1 下面的数量
+
+save:表示人工触发的持久化
+quit:退出连接
+
+
+对键的操作：
+
+del 键名，删除键名
+exists 健名，健名是否存在
+
+ttl命令：
+这key的生存时间，当返回-1的时候是没有过期时间，不存在key是-2
+
+expire a 10  设置a的过期时间是10秒
+ttl a 查看剩余多少时间
+
+clear清除
+
+type a 返回这键的类型
+randomkey 随机key
+rename a b 把a的键名替换成b ,如果系统有b的键名存在，就直接覆盖
+renamenx a b 如果系统有b的键名存在，那么就不会覆盖
+
+
+
+String 字符串结构；
+设置键的时间是100秒,使用ttl e检查
+setex e 100 e
+
+设置f的时间是10000毫秒，使用ttl f检查
+ psetex f 10000 f
+
+getrange 键 范围：
+
+set word wordword
+
+0,也包括2，输出的是wor
+
+
+getset使用：
+设置已经有的键的里面的时候的时候，会返回该键旧的值
+set yyy qqq
+getset yyy ttt 这个时候就返回了qqq
+
+mset使用：
+就是批量设置；mset 键 值 键 值 键 值
+mset a1 a1 b1 b1 c1 c1
+
+mget使用：
+
+mget a1 b1 c1  分别拿 a1 b1 c1 对应的值
+
+setnx 使用：
+设置的时候，如果当前键不存在，那么就可以成功，如果当前的键存在就不成功
+setnx a a，如果键a存在就不成功
+
+msetnx 可以设置多个：
+例如 msetnx s1 s1 a1 a1
+如果键s1没有 a1 有 那么就失败，只有键存在就失败，要么都成功，要么都失败
+
+
+strlen 获取值的长度，也就是获取字符串的长度
+
+strlen word  返回长度是8  里面存的是wordword
+
+
+
+数值类型：
+set 1  1
+键对应的值必须是数值
+incr 1 那么返回的结果就是值加1 那么就是2
+
+
+incrby 1 100，也就是把键是1的值加上100
+
+
+decr是减；
+
+decr 1就是把键是1对应的值减1
+decr 1 3就是把键是1对应的值减3
+
+
+使用append追加：
+例如：在键是a1对应的值追加： append a1  qwerttttt 
+a1对应的值后面就追加了qwerttttt,在末尾追加
+
+
+
+
+
+
+
+hash:
+hash 设置值：hset  map name misswang
+
+hexists map name 查看name 存不存在
+
+hget map  name 获取name的值
+
+hgetall map 获取map中的所有的键和值
+
+hkeys map 获取所有的键
+hvals map 获取所有的值
+
+hlen map 查看key数量是多少
+
+hmget map name age m表示获取多个，也就是获取name和age
+
+hmset map name1 misswangwang age1 1818 设置多个值
+
+hdel key1 key2 删除key1和key2
+hsetnx map color red  加nx的时候设置值不能有键重复，如果有那么就设置不进去
+
+
+
+
+
+类似于list列表可以应许是重复值：
+lpush list 1 2 3 4 5 6 7 8 9
+type list  返回list
+
+llen list  长度是 9
+
+lrange list 0 2 返回的是 9 8 7 从后面开始拿
+
+lset lsit 0 100 把第0个位置设置成100
+
+lindex list 0 返回的是100 ，获取第0个位置的值
+
+lpop list 移除的是100
+
+rpop list 移除的是1
+
+lrange list 0 100 这个时候0和100就不存在了
+
+
+数据结构中的set可以去除重复，没有顺序：
+
+sadd set1 a b c d
+asdd set2 c d  e f
+scard set 返回集合的数量
+
+smembers set1 查看所有值
+
+差集：
+adiff set1 set2  a b c d- c d e f =a b
+adiff set2 set1  c d e f- a b c d=e f
+
+交集：
+sinter set1 set2 返回 c d
+
+并集：
+sunion set1 set2 返回 a b c d e f
+
+随你的在set1集合中返回2个元素：
+srandmember set1 2
+
+问一下a是不是set1集合中的元素：
+sismember set1 a 是返回1，不是返回0
+
+sadd set3  q w e r
+
+移除set3中的q w元素：
+srem set3 q w
+
+spop set3随机移除set3中一个元素并返回移除的元素：
+spop set3 返回r
+
+有序集合保证顺序，具备set的特性按照分数排序：
+添加：
+zadd youxuset1 100 a 200 b
+
+重命名：
+rename youxuset1 youxuset
+
+类型：
+type yuouxuset 返回 zset
+
+统计数量：
+zcard youxuset
+
+查看a的分数：
+zscore youxuset a
+
+请0到200分的有几个包含0和200：
+zcount youxuset 0 200
+
+返回a对应的下标：
+zrank youxuset a 返回的是0
+
+给a加1000分：
+zincr youxuset 1000 a 返回的是1100
+
+从第0个元素开始拿一直拿到第100个元素：注意是下标
+zrange youxuset 0 100
+
+看下每个人对应的分数：
+zrange youxuset 0 100 withscores
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
